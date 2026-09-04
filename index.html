@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="瀚美堂 - 展厅与社区改造设计作品集">
+<title>瀚美堂 | 设计作品集</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#0a0a12;--bg-2:#12121f;--surface:rgba(255,255,255,.04);--surface-hover:rgba(255,255,255,.08);
+--border:rgba(255,255,255,.08);--border-hover:rgba(255,255,255,.16);
+--text:#f0f0f5;--text-2:#9898b0;--text-3:#5a5a78;
+--cyan:#00e5ff;--purple:#a855f7;--pink:#ec4899;--lime:#84cc16;
+--grad:linear-gradient(135deg,#00e5ff 0%,#a855f7 50%,#ec4899 100%);
+--radius:16px;--radius-sm:10px;--radius-lg:24px;--blur:blur(20px);
+--shadow:0 8px 32px rgba(0,0,0,.4);--shadow-glow:0 0 40px rgba(168,85,247,.15);
+--transition:.4s cubic-bezier(.25,.46,.45,.94);
+--font:'Segoe UI','PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;
+--mono:'SF Mono','Fira Code','Consolas','Courier New',monospace;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;min-height:100vh}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+.bg-blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;animation:blob-float 20s ease-in-out infinite}
+.blob-1{width:500px;height:500px;background:var(--cyan);top:-100px;left:-100px}
+.blob-2{width:600px;height:600px;background:var(--purple);bottom:-150px;right:-100px;animation-delay:-7s}
+.blob-3{width:400px;height:400px;background:var(--pink);top:50%;left:50%;animation-delay:-14s}
+@keyframes blob-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(80px,-60px) scale(1.1)}66%{transform:translate(-60px,80px) scale(.9)}}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,18,.6);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--border);transition:var(--transition)}
+.nav.scrolled{background:rgba(10,10,18,.85);padding:12px 32px}
+.nav-logo{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.nav-logo .dot{width:10px;height:10px;border-radius:50%;background:var(--grad);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.7}}
+.nav-links{display:flex;gap:28px;font-size:.875rem;font-weight:500;opacity:.7}
+.nav-links a{position:relative;transition:var(--transition)}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--grad);transition:var(--transition)}
+.nav-links a:hover{opacity:1}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);transition:var(--transition)}
+.hamburger.active span:first-child{transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:last-child{transform:rotate(-45deg) translate(5px,-5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 32px 80px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%)}
+.hero-content{position:relative;z-index:1;text-align:center;max-width:720px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;background:var(--surface);border:1px solid var(--border);font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);margin-bottom:24px}
+.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:16px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-tagline{font-size:clamp(1rem,2vw,1.25rem);color:var(--text-2);margin-bottom:12px;font-weight:300}
+.hero-desc{font-size:.95rem;color:var(--text-3);max-width:480px;margin:0 auto 40px;line-height:1.7}
+.hero-stats{display:flex;justify-content:center;gap:48px;margin-bottom:40px}
+.stat{text-align:center}
+.stat-num{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:.75rem;color:var(--text-3);margin-top:4px;letter-spacing:.05em;text-transform:uppercase}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:var(--radius-sm);background:var(--grad);color:#fff;font-weight:600;font-size:.95rem;box-shadow:var(--shadow-glow);transition:var(--transition)}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(168,85,247,.25)}
+
+.section{position:relative;z-index:1;padding:80px 32px;max-width:1280px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:56px}
+.section-label{display:inline-block;padding:4px 12px;border-radius:4px;background:var(--surface);border:1px solid var(--border);font-size:.7rem;font-weight:700;letter-spacing:.12em;color:var(--cyan);margin-bottom:16px;text-transform:uppercase}
+.section-title{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;margin-bottom:12px}
+.section-desc{font-size:.95rem;color:var(--text-3);max-width:560px;margin:0 auto}
+
+.search-box{position:relative;max-width:420px;width:100%;margin:24px auto 0}
+.search-box input{width:100%;padding:12px 44px 12px 18px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:.95rem;outline:none;transition:var(--transition)}
+.search-box input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,229,255,.15)}
+.search-box input::placeholder{color:var(--text-3)}
+#searchClear{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:var(--surface-hover);color:var(--text-2);font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;pointer-events:none}
+#searchClear.visible{opacity:1;pointer-events:auto}
+#searchClear:hover{background:var(--border-hover);color:var(--text)}
+.project-card.hidden{display:none!important}
+
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px}
+.project-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:var(--transition);cursor:pointer;position:relative;transform-style:preserve-3d}
+.project-card:hover{border-color:var(--border-hover);box-shadow:var(--shadow-glow)}
+.card-image-wrap{position:relative;height:240px;overflow:hidden}
+.card-image{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.project-card:hover .card-image{transform:scale(1.08)}
+.card-gradient-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,10,18,.8) 100%);pointer-events:none}
+.card-glow{position:absolute;inset:0;opacity:0;transition:opacity .4s;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,229,255,.15) 0%,transparent 60%);pointer-events:none}
+.project-card:hover .card-glow{opacity:1}
+.card-count{position:absolute;top:12px;right:12px;padding:4px 10px;border-radius:6px;background:rgba(10,10,18,.7);backdrop-filter:blur(8px);font-size:.75rem;font-weight:600;color:var(--cyan);border:1px solid var(--border-hover)}
+.card-content{padding:24px}
+.card-meta{display:flex;gap:12px;margin-bottom:10px;font-size:.75rem;color:var(--text-3);font-family:var(--mono)}
+.card-category{color:var(--cyan);font-weight:600}
+.card-year{color:var(--text-2)}
+.card-title{font-size:1.15rem;font-weight:700;margin-bottom:6px;letter-spacing:-.01em}
+.card-subtitle{font-size:.8rem;color:var(--text-3);font-family:var(--mono);margin-bottom:12px}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:.7rem;padding:3px 10px;border-radius:4px;background:var(--surface-hover);border:1px solid var(--border);color:var(--text-2);transition:var(--transition)}
+.project-card:hover .tag{border-color:rgba(0,229,255,.2);color:var(--cyan)}
+
+.no-results{display:none;text-align:center;padding:60px 20px;color:var(--text-2)}
+
+.guide-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px}
+.guide-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:28px;text-align:center;transition:var(--transition)}
+.guide-card:hover{border-color:var(--border-hover);transform:translateY(-4px)}
+.guide-icon{font-size:2rem;margin-bottom:12px}
+.guide-card h3{font-size:1rem;margin-bottom:8px;font-weight:600}
+.guide-card p{font-size:.85rem;color:var(--text-3);line-height:1.5}
+
+.back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1.2rem;display:flex;align-items:center;justify-content:center;opacity:0;transition:var(--transition);z-index:90;pointer-events:none}
+.back-top.active{opacity:1;pointer-events:auto}
+.back-top:hover{background:var(--surface-hover);border-color:var(--border-hover)}
+
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease;padding:40px 20px}
+.modal-overlay.active{opacity:1;pointer-events:auto}
+.modal{position:relative;width:100%;max-width:1100px;max-height:90vh;display:flex;flex-direction:column;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.modal-close{position:absolute;top:16px;right:16px;z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(10,10,18,.6);border:1px solid var(--border);color:var(--text);font-size:1.4rem;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.modal-close:hover{background:var(--surface-hover);border-color:var(--border-hover)}
+.carousel{position:relative;flex:1;overflow:hidden;display:flex;flex-direction:column}
+.carousel-counter{position:absolute;top:16px;left:16px;z-index:10;padding:4px 12px;border-radius:6px;background:rgba(10,10,18,.6);backdrop-filter:blur(8px);font-size:.75rem;font-family:var(--mono);color:var(--cyan);border:1px solid var(--border-hover)}
+.carousel-track{display:flex;transition:transform .5s cubic-bezier(.25,.46,.45,.94);height:100%}
+.carousel-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:20px;position:relative}
+.carousel-slide img{max-width:100%;max-height:70vh;object-fit:contain;border-radius:var(--radius-sm);box-shadow:0 8px 32px rgba(0,0,0,.3);cursor:zoom-in}
+.zoom-zoom-in{position:absolute;bottom:20px;right:20px;z-index:5;padding:6px 10px;border-radius:6px;background:rgba(10,10,18,.6);backdrop-filter:blur(8px);font-size:.75rem;color:var(--cyan);border:1px solid var(--border-hover);pointer-events:none;opacity:.7}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(10,10,18,.6);border:1px solid var(--border);color:var(--text);font-size:1.5rem;display:flex;align-items:center;justify-content:center;transition:var(--transition);z-index:5}
+.carousel-btn:hover{background:var(--surface-hover);border-color:var(--border-hover)}
+.carousel-btn.prev{left:16px}
+.carousel-btn.next{right:16px}
+.carousel-indicators{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.indicator{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:var(--transition)}
+.indicator.active{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.modal-info{padding:20px 24px;border-top:1px solid var(--border);display:flex;gap:24px;flex-wrap:wrap;font-size:.85rem}
+.modal-info-item{display:flex;gap:8px;align-items:center}
+.modal-info-item .label{color:var(--text-3);font-family:var(--mono);font-size:.7rem}
+.modal-info-item .value{color:var(--text);font-weight:500}
+.modal-thumbs{display:flex;gap:8px;padding:12px 24px;border-top:1px solid var(--border);overflow-x:auto;scrollbar-width:thin}
+.modal-thumbs::-webkit-scrollbar{height:4px}
+.modal-thumbs::-webkit-scrollbar-thumb{background:var(--border-hover);border-radius:2px}
+.modal-thumb{min-width:80px;height:60px;border-radius:var(--radius-sm);overflow:hidden;border:2px solid transparent;cursor:pointer;opacity:.6;transition:var(--transition)}
+.modal-thumb.active{border-color:var(--cyan);opacity:1}
+.modal-thumb img{width:100%;height:100%;object-fit:cover}
+
+.zoom-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.96);display:flex;align-items:center;justify-content:center;padding:32px;opacity:0;pointer-events:none;transition:opacity .35s ease;cursor:zoom-out}
+.zoom-overlay.active{opacity:1;pointer-events:auto}
+.zoom-overlay img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 0 60px rgba(0,0,0,.8);transform:scale(.9);transition:transform .35s ease}
+.zoom-overlay.active img{transform:scale(1)}
+.zoom-close{position:absolute;top:24px;right:24px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;transition:var(--transition);z-index:10}
+.zoom-close:hover{background:rgba(255,255,255,.15)}
+.zoom-click-zone{position:absolute;top:0;bottom:0;width:25%;z-index:5;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.zoom-click-zone.left{left:0}
+.zoom-click-zone.right{right:0}
+.zoom-indicators{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.zoom-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:var(--transition)}
+.zoom-dot.active{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.zoom-counter{position:absolute;top:24px;left:50%;transform:translateX(-50%);padding:6px 16px;border-radius:6px;background:rgba(255,255,255,.08);font-size:.75rem;font-family:var(--mono);color:var(--cyan);z-index:5}
+.zoom-hint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:10;font-size:.75rem;font-family:var(--mono);color:rgba(255,255,255,.4);letter-spacing:.05em}
+
+@media (max-width:768px){
+.nav{padding:12px 20px}
+.nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(10,10,18,.95);backdrop-filter:blur(20px);flex-direction:column;gap:0;padding:8px 0;border-bottom:1px solid var(--border)}
+.nav-links.active{display:flex}
+.nav-links a{padding:12px 20px}
+.hamburger{display:flex}
+.hero{padding:100px 20px 60px}
+.hero-stats{gap:24px}
+.section{padding:60px 20px}
+.projects-grid{grid-template-columns:1fr}
+.guide-grid{grid-template-columns:repeat(2,1fr)}
+.modal{padding:0;border-radius:0;max-height:100vh}
+.carousel-slide{padding:10px}
+.carousel-slide img{max-height:60vh}
+.carousel-btn{width:40px;height:40px;font-size:1.2rem}
+.modal-thumbs{padding:8px 16px}
+.modal-thumb{min-width:60px;height:48px}
+.modal-info{padding:16px;gap:12px;font-size:.8rem}
+.zoom-hint{bottom:48px}
+}
+@media (prefers-reduced-motion:reduce){
+*{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<nav class="nav" id="nav">
+  <div class="nav-logo"><div class="dot"></div>瀚美堂</div>
+  <div class="nav-links" id="navLinks">
+    <a href="#hero">首页</a>
+    <a href="#works">作品集</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="菜单"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-bg"><div class="hero-grid"></div></div>
+  <div class="hero-content">
+    <div class="hero-badge">历年设计作品集</div>
+    <h1 class="hero-title">瀚美堂</h1>
+    <p class="hero-tagline">展厅与社区改造设计作品集</p>
+    <p class="hero-desc">融合空间叙事与视觉表达，为展厅、文化墙、社区改造等项目注入沉浸式体验</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">9</div><div class="stat-label">设计项目</div></div>
+      <div class="stat"><div class="stat-num">9</div><div class="stat-label">历年积累</div></div>
+      <div class="stat"><div class="stat-num">200+</div><div class="stat-label">实景照片</div></div>
+    </div>
+    <a href="#works" class="hero-cta">浏览作品 ↓</a>
+  </div>
+</section>
+
+<section class="section" id="guide">
+  <div class="section-header">
+    <span class="section-label">HOW TO USE</span>
+    <h2 class="section-title">浏览指南</h2>
+  </div>
+  <div class="guide-grid">
+    <div class="guide-card"><div class="guide-icon">👆</div><h3>点击卡片</h3><p>查看项目详情与多张实景照片</p></div>
+    <div class="guide-card"><div class="guide-icon">🔍</div><h3>点击照片</h3><p>进入全屏放大模式浏览细节</p></div>
+    <div class="guide-card"><div class="guide-icon">⌨️</div><h3>键盘操作</h3><p>← → 切换照片，ESC 关闭</p></div>
+    <div class="guide-card"><div class="guide-icon">📱</div><h3>手机滑动</h3><p>左右滑动切换，双指缩放</p></div>
+  </div>
+</section>
+
+<section class="section" id="works">
+  <div class="section-header">
+    <span class="section-label">SELECTED WORKS</span>
+    <h2 class="section-title">精选设计实践</h2>
+    <p class="section-desc">涵盖展厅、文化墙、社区改造等领域的设计实践，点击卡片查看多图详情</p>
+    <div class="search-box">
+      <input type="text" id="workSearch" placeholder="搜索作品名称、类别、标签..." autocomplete="off">
+      <button id="searchClear" aria-label="清空搜索">&times;</button>
+    </div>
+  </div>
+  <div class="projects-grid" id="projectsGrid">
+    <!-- Cards will be generated by JS -->
+  </div>
+  <div class="no-results" id="noResults">
+    <p style="font-size:1.2rem;margin-bottom:8px">未找到匹配作品</p>
+    <p style="font-size:.9rem;opacity:.6">尝试搜索其他关键词，或点击清空按钮重置</p>
+  </div>
+</section>
+
+<button class="back-top" id="backTop" aria-label="返回顶部">↑</button>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="关闭">&times;</button>
+    <div class="carousel" id="carousel">
+      <div class="carousel-counter" id="carouselCounter">1 / 5</div>
+      <div class="carousel-track" id="carouselTrack"></div>
+      <button class="carousel-btn prev" id="carouselPrev" aria-label="上一张">‹</button>
+      <button class="carousel-btn next" id="carouselNext" aria-label="下一张">›</button>
+      <div class="carousel-indicators" id="carouselIndicators"></div>
+    </div>
+    <div class="modal-info" id="modalInfo"></div>
+    <div class="modal-thumbs" id="modalThumbs"></div>
+  </div>
+</div>
+
+<div class="zoom-overlay" id="zoomOverlay">
+  <button class="zoom-close" id="zoomClose" aria-label="关闭">&times;</button>
+  <div class="zoom-click-zone zoom-zone-left"></div>
+  <div class="zoom-click-zone zoom-zone-right"></div>
+  <div class="zoom-img-wrap"><img id="zoomImg" src="" alt="" draggable="false"></div>
+  <div class="zoom-indicators" id="zoomIndicators"></div>
+  <div class="zoom-counter" id="zoomCounter"></div>
+  <div class="zoom-hint">← → 切换 · ESC 关闭</div>
+</div>
+
+<script>
+var PROJECTS = [
+  {"title":"粮食学院校史馆","subtitle":"Grain College History Museum","category":"展馆设计","year":"2025","location":"江苏·镇江","desc":"粮食学院校史馆设计展示。项目融合校史文化与多媒体互动，打造沉浸式的校史陈列空间，展现学校发展历程与文化传承。","tags":["展馆设计","空间叙事","校史陈列","多媒体互动","场景复原"],"images":["images/liangshi/001.jpg","images/liangshi/002.jpg","images/liangshi/003.jpg","images/liangshi/004.jpg","images/liangshi/005.jpg","images/liangshi/006.jpg","images/liangshi/007.jpg","images/liangshi/008.jpg","images/liangshi/009.jpg","images/liangshi/010.jpg","images/liangshi/011.jpg","images/liangshi/012.jpg","images/liangshi/013.jpg","images/liangshi/014.jpg","images/liangshi/015.jpg","images/liangshi/016.jpg","images/liangshi/017.jpg","images/liangshi/018.jpg","images/liangshi/019.jpg","images/liangshi/020.jpg","images/liangshi/021.jpg","images/liangshi/022.jpg","images/liangshi/023.jpg","images/liangshi/024.jpg"]},
+  {"title":"陈家门社区党群服务中心","subtitle":"Chenjiamen Community Party-Mass Service Center","category":"社区改造","year":"2025","location":"江苏·镇江","desc":"陈家门社区党群服务中心竣工实景展示。项目分一楼公共大厅与服务区域、二楼多功能活动空间，融合党建文化与服务功能，打造温馨便民的社区服务阵地。","tags":["社区改造","党群服务","党建文化"],"floor1_count":32,"floor2_count":8,"images":["images/chenjiamen/f1_001.jpg","images/chenjiamen/f1_002.jpg","images/chenjiamen/f1_003.jpg","images/chenjiamen/f1_004.jpg","images/chenjiamen/f1_005.jpg","images/chenjiamen/f1_006.jpg","images/chenjiamen/f1_007.jpg","images/chenjiamen/f1_008.jpg","images/chenjiamen/f1_009.jpg","images/chenjiamen/f1_010.jpg","images/chenjiamen/f1_011.jpg","images/chenjiamen/f1_012.jpg","images/chenjiamen/f1_013.jpg","images/chenjiamen/f1_014.jpg","images/chenjiamen/f1_015.jpg","images/chenjiamen/f1_016.jpg","images/chenjiamen/f1_017.jpg","images/chenjiamen/f1_018.jpg","images/chenjiamen/f1_019.jpg","images/chenjiamen/f1_020.jpg","images/chenjiamen/f1_021.jpg","images/chenjiamen/f1_022.jpg","images/chenjiamen/f1_023.jpg","images/chenjiamen/f1_024.jpg","images/chenjiamen/f1_025.jpg","images/chenjiamen/f1_026.jpg","images/chenjiamen/f1_027.jpg","images/chenjiamen/f1_028.jpg","images/chenjiamen/f1_029.jpg","images/chenjiamen/f1_030.jpg","images/chenjiamen/f1_031.jpg","images/chenjiamen/f1_032.jpg","images/chenjiamen/f2_001.jpg","images/chenjiamen/f2_002.jpg","images/chenjiamen/f2_003.jpg","images/chenjiamen/f2_004.jpg","images/chenjiamen/f2_005.jpg","images/chenjiamen/f2_006.jpg","images/chenjiamen/f2_007.jpg","images/chenjiamen/f2_008.jpg"]},
+  {"title":"谏壁街道月湖蔡家党群服务中心","subtitle":"Yuehu Caijia Party-Mass Service Center","category":"社区改造","year":"2024","location":"江苏·镇江","desc":"谏壁街道月湖蔡家党群服务中心设计展示。项目以社区改造为核心，融合党群服务功能与全景展示技术，打造便民利民的社区服务空间。","tags":["社区改造","党群服务","全景展示"],"vrLink":"https://720yun.com/t/7dvkcsd7eyw","images":["images/yuehu/001.jpg"]},
+  {"title":"京口区检察院","subtitle":"Jingkou District Procuratorate","category":"展厅设计","year":"2023","location":"江苏·镇江","desc":"京口区检察院展厅设计展示。展厅以法治文化为核心，融合多媒体展示与场景复原，打造庄重的法治教育空间。","tags":["展厅设计","法治文化","多媒体展示","场景复原","互动体验"],"images":["images/jingkou/001.jpg","images/jingkou/002.jpg","images/jingkou/003.jpg","images/jingkou/004.jpg","images/jingkou/005.jpg","images/jingkou/006.jpg","images/jingkou/007.jpg","images/jingkou/008.jpg","images/jingkou/009.jpg","images/jingkou/010.jpg","images/jingkou/011.jpg","images/jingkou/012.jpg","images/jingkou/013.jpg"]},
+  {"title":"五洲村史馆展厅","subtitle":"Wuzhou Village History Museum","category":"展厅设计","year":"2022","location":"江苏·镇江","desc":"五洲村史馆展厅竣工实景展示。展厅以村史文化为主线，通过图文展陈与场景复原，讲述乡村发展历程。","tags":["展厅设计","村史文化","场景复原"],"images":["images/wuzhou/001.jpg","images/wuzhou/002.jpg","images/wuzhou/003.jpg","images/wuzhou/004.jpg","images/wuzhou/005.jpg","images/wuzhou/006.jpg","images/wuzhou/007.jpg","images/wuzhou/008.jpg","images/wuzhou/009.jpg","images/wuzhou/010.jpg","images/wuzhou/011.jpg","images/wuzhou/012.jpg","images/wuzhou/013.jpg","images/wuzhou/014.jpg","images/wuzhou/015.jpg","images/wuzhou/016.jpg","images/wuzhou/017.jpg","images/wuzhou/018.jpg","images/wuzhou/019.jpg","images/wuzhou/020.jpg","images/wuzhou/021.jpg","images/wuzhou/022.jpg","images/wuzhou/023.jpg","images/wuzhou/024.jpg","images/wuzhou/025.jpg","images/wuzhou/026.jpg","images/wuzhou/027.jpg","images/wuzhou/028.jpg","images/wuzhou/029.jpg","images/wuzhou/030.jpg"]},
+  {"title":"大津重工展厅","subtitle":"Dajin Heavy Industry Exhibition Hall","category":"展厅设计","year":"2022","location":"江苏·镇江","desc":"大津重工展厅竣工实景展示。企业展厅融合产品展示、技术演示与企业文化，以现代工业风格呈现企业实力。","tags":["展厅设计","企业展厅","工业风格"],"images":["images/dajin/001.jpg","images/dajin/002.jpg","images/dajin/003.jpg","images/dajin/004.jpg","images/dajin/005.jpg","images/dajin/006.jpg","images/dajin/007.jpg","images/dajin/008.jpg","images/dajin/009.jpg","images/dajin/010.jpg","images/dajin/011.jpg","images/dajin/012.jpg","images/dajin/013.jpg","images/dajin/014.jpg","images/dajin/015.jpg","images/dajin/016.jpg","images/dajin/017.jpg","images/dajin/018.jpg","images/dajin/019.jpg","images/dajin/020.jpg","images/dajin/021.jpg","images/dajin/022.jpg","images/dajin/023.jpg","images/dajin/024.jpg","images/dajin/025.jpg"]},
+  {"title":"胜地韦岗展厅","subtitle":"Shengdi Weigang Exhibition Hall","category":"展厅设计","year":"2021","location":"江苏·镇江","desc":"胜地韦岗展厅竣工实景展示。展厅以韦岗抗战历史为核心，融合多媒体互动与实物展陈，打造庄重的红色教育空间。","tags":["展厅设计","红色教育","多媒体互动"],"images":["images/shengdi/001.jpg","images/shengdi/002.jpg","images/shengdi/003.jpg","images/shengdi/004.jpg","images/shengdi/005.jpg","images/shengdi/006.jpg","images/shengdi/007.jpg","images/shengdi/008.jpg","images/shengdi/009.jpg","images/shengdi/010.jpg","images/shengdi/011.jpg","images/shengdi/012.jpg","images/shengdi/013.jpg","images/shengdi/014.jpg","images/shengdi/015.jpg","images/shengdi/016.jpg","images/shengdi/017.jpg","images/shengdi/018.jpg","images/shengdi/019.jpg","images/shengdi/020.jpg","images/shengdi/021.jpg","images/shengdi/022.jpg","images/shengdi/023.jpg","images/shengdi/024.jpg","images/shengdi/025.jpg","images/shengdi/026.jpg","images/shengdi/027.jpg","images/shengdi/028.jpg"]},
+  {"title":"谏电二邨红色物业","subtitle":"Jiandian Second Village Red Property","category":"社区改造","year":"2021","location":"江苏·镇江","desc":"谏电二邨红色物业竣工实景展示。项目将党建文化融入社区物业服务空间，打造红色物业示范阵地。","tags":["社区改造","红色物业","党建文化"],"images":["images/jiandian/001.jpg","images/jiandian/002.jpg","images/jiandian/003.jpg","images/jiandian/004.jpg","images/jiandian/005.jpg","images/jiandian/006.jpg","images/jiandian/007.jpg","images/jiandian/008.jpg","images/jiandian/009.jpg","images/jiandian/010.jpg","images/jiandian/011.jpg","images/jiandian/012.jpg","images/jiandian/013.jpg","images/jiandian/014.jpg","images/jiandian/015.jpg"]},
+  {"title":"阳光世纪花园社区","subtitle":"Sunshine Century Garden Community","category":"社区改造","year":"2019","location":"江苏·镇江","desc":"阳光世纪花园社区竣工实景展示。项目涵盖社区公共空间改造、景观优化与功能提升，打造宜居舒适的现代化社区环境。","tags":["社区改造","公共空间","景观优化"],"images":["images/yangguang/001.jpg","images/yangguang/002.jpg","images/yangguang/003.jpg","images/yangguang/004.jpg","images/yangguang/005.jpg","images/yangguang/006.jpg","images/yangguang/007.jpg","images/yangguang/008.jpg","images/yangguang/009.jpg","images/yangguang/010.jpg","images/yangguang/011.jpg","images/yangguang/012.jpg","images/yangguang/013.jpg","images/yangguang/014.jpg","images/yangguang/015.jpg","images/yangguang/016.jpg","images/yangguang/017.jpg","images/yangguang/018.jpg"]}
+];
+
+// Build cards on load
+var projectsGrid = document.getElementById('projectsGrid');
+PROJECTS.forEach(function(p, idx) {
+  var delay = idx * 0.1;
+  var tagsHtml = p.tags.slice(0,3).map(function(t){ return '<span class="tag">'+t+'</span>'; }).join('');
+  var countText = p.floor1_count ? '一楼 '+p.floor1_count+' · 二楼 '+p.floor2_count : p.images.length+' 图';
+  var card = document.createElement('article');
+  card.className = 'project-card';
+  card.setAttribute('data-project', idx);
+  card.setAttribute('data-title', p.title);
+  card.setAttribute('data-subtitle', p.subtitle);
+  card.setAttribute('data-category', p.category);
+  card.setAttribute('data-year', p.year);
+  card.setAttribute('data-tags', p.tags.join(','));
+  card.setAttribute('data-desc', p.desc);
+  card.style.cssText = '--card-delay:'+delay+'s';
+  card.innerHTML = '<div class="card-inner"><div class="card-image-wrap"><img src="'+p.images[0]+'" alt="'+p.subtitle+'" loading="lazy" class="card-image"><div class="card-gradient-overlay"></div><div class="card-glow"></div><div class="card-count">'+countText+'</div></div><div class="card-content"><div class="card-meta"><span class="card-category">'+p.category+'</span><span class="card-year">'+p.year+'</span></div><h3 class="card-title">'+p.title+'</h3><p class="card-subtitle">'+p.subtitle+'</p><div class="card-tags">'+tagsHtml+'</div></div></div>';
+  projectsGrid.appendChild(card);
+});
+
+// Card hover effects
+document.querySelectorAll('.project-card').forEach(function(card) {
+  card.addEventListener('mousemove', function(e) {
+    var rect = card.getBoundingClientRect();
+    var x = e.clientX - rect.left, y = e.clientY - rect.top;
+    var cx = rect.width / 2, cy = rect.height / 2;
+    card.style.transform = 'perspective(800px) rotateX(' + ((y - cy) / cy * -6) + 'deg) rotateY(' + ((x - cx) / cx * 6) + 'deg) translateY(-4px)';
+    card.querySelector('.card-glow').style.setProperty('--mx', (x / rect.width * 100) + '%');
+    card.querySelector('.card-glow').style.setProperty('--my', (y / rect.height * 100) + '%');
+  });
+  card.addEventListener('mouseleave', function() { card.style.transform = ''; });
+});
+
+// ===== Carousel Modal =====
+var modalOverlay = document.getElementById('modalOverlay');
+var modalClose = document.getElementById('modalClose');
+var carouselTrack = document.getElementById('carouselTrack');
+var carouselIndicators = document.getElementById('carouselIndicators');
+var modalThumbs = document.getElementById('modalThumbs');
+var carouselCounter = document.getElementById('carouselCounter');
+var carouselPrev = document.getElementById('carouselPrev');
+var carouselNext = document.getElementById('carouselNext');
+var currentSlide = 0;
+var currentProject = null;
+
+function openModal(idx) {
+  var p = PROJECTS[idx];
+  currentProject = idx;
+  currentSlide = 0;
+  carouselTrack.innerHTML = '';
+  carouselIndicators.innerHTML = '';
+  modalThumbs.innerHTML = '';
+  p.images.forEach(function(img, i) {
+    var slide = document.createElement('div');
+    slide.className = 'carousel-slide';
+    slide.innerHTML = '<div class="zoom-zoom-in">&#128269;</div><img src="' + img + '" alt="' + p.subtitle + ' - ' + (i+1) + '" style="cursor:zoom-in">';
+    slide.querySelector('img').addEventListener('click', function(e) { e.stopPropagation(); openZoom(img, idx, i); });
+    carouselTrack.appendChild(slide);
+    var ind = document.createElement('div');
+    ind.className = 'indicator' + (i === 0 ? ' active' : '');
+    ind.addEventListener('click', function() { goToSlide(i); });
+    carouselIndicators.appendChild(ind);
+    var thumb = document.createElement('div');
+    thumb.className = 'modal-thumb' + (i === 0 ? ' active' : '');
+    thumb.innerHTML = '<img src="' + img + '" alt="">';
+    thumb.addEventListener('click', function() { goToSlide(i); });
+    modalThumbs.appendChild(thumb);
+  });
+  var info = '<div class="modal-info-item"><span class="label">TITLE</span><span class="value">' + p.title + '</span></div>';
+  info += '<div class="modal-info-item"><span class="label">LOCATION</span><span class="value">' + p.location + '</span></div>';
+  info += '<div class="modal-info-item"><span class="label">CATEGORY</span><span class="value">' + p.category + '</span></div>';
+  info += '<div class="modal-info-item"><span class="label">PHOTOS</span><span class="value">' + p.images.length + '</span></div>';
+  if (p.vrLink) info += '<div class="modal-info-item"><span class="label">全景漫游</span><a href="' + p.vrLink + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--cyan);text-decoration:underline;font-weight:600">点击体验 →</a></div>';
+  document.getElementById('modalInfo').innerHTML = info;
+  goToSlide(0);
+  modalOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modalOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function goToSlide(n) {
+  if (currentProject === null) return;
+  var total = PROJECTS[currentProject].images.length;
+  currentSlide = ((n % total) + total) % total;
+  var slides = carouselTrack.querySelectorAll('.carousel-slide');
+  var inds = carouselIndicators.querySelectorAll('.indicator');
+  var thumbs = modalThumbs.querySelectorAll('.modal-thumb');
+  slides.forEach(function(s, i) { s.classList.toggle('active', i === currentSlide); });
+  inds.forEach(function(ind, i) { ind.classList.toggle('active', i === currentSlide); });
+  thumbs.forEach(function(t, i) { t.classList.toggle('active', i === currentSlide); });
+  carouselCounter.textContent = (currentSlide + 1) + ' / ' + total;
+  var activeThumb = modalThumbs.querySelector('.modal-thumb.active');
+  if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+projectsGrid.addEventListener('click', function(e) {
+  var card = e.target.closest('.project-card');
+  if (!card || card.classList.contains('hidden')) return;
+  openModal(parseInt(card.getAttribute('data-project')));
+});
+
+modalClose.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closeModal(); });
+carouselPrev.addEventListener('click', function() { goToSlide(currentSlide - 1); });
+carouselNext.addEventListener('click', function() { goToSlide(currentSlide + 1); });
+
+document.addEventListener('keydown', function(e) {
+  if (!modalOverlay.classList.contains('active')) return;
+  if (e.key === 'Escape') closeModal();
+  else if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+  else if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+});
+
+var touchStartX = 0;
+carouselTrack.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; });
+carouselTrack.addEventListener('touchend', function(e) {
+  var diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) goToSlide(currentSlide + 1);
+    else goToSlide(currentSlide - 1);
+  }
+});
+
+// ===== Image Zoom =====
+var zoomOverlay = document.getElementById('zoomOverlay');
+var zoomImg = document.getElementById('zoomImg');
+var zoomClose = document.getElementById('zoomClose');
+var zoomIndicators = document.getElementById('zoomIndicators');
+var zoomCounter = document.getElementById('zoomCounter');
+var zoomZoneLeft = document.querySelector('.zoom-zone-left');
+var zoomZoneRight = document.querySelector('.zoom-zone-right');
+var zoomProjectIdx = null;
+var zoomSlideIdx = null;
+
+function updateZoomDisplay() {
+  if (zoomProjectIdx === null || zoomSlideIdx === null) return;
+  var images = PROJECTS[zoomProjectIdx].images;
+  zoomImg.src = images[zoomSlideIdx];
+  zoomCounter.textContent = (zoomSlideIdx + 1) + ' / ' + images.length;
+  var dots = zoomIndicators.querySelectorAll('.zoom-dot');
+  dots.forEach(function(d, i) { d.classList.toggle('active', i === zoomSlideIdx); });
+}
+
+function openZoom(src, projIdx, slideIdx) {
+  zoomProjectIdx = projIdx;
+  zoomSlideIdx = slideIdx;
+  zoomImg.src = src;
+  zoomIndicators.innerHTML = '';
+  PROJECTS[projIdx].images.forEach(function(img, i) {
+    var dot = document.createElement('div');
+    dot.className = 'zoom-dot' + (i === slideIdx ? ' active' : '');
+    dot.addEventListener('click', function(e) { e.stopPropagation(); zoomSlideIdx = i; updateZoomDisplay(); });
+    zoomIndicators.appendChild(dot);
+  });
+  updateZoomDisplay();
+  zoomOverlay.classList.add('active');
+}
+
+function closeZoom() {
+  zoomOverlay.classList.remove('active');
+  zoomProjectIdx = null;
+  zoomSlideIdx = null;
+}
+
+function zoomGoPrev() {
+  if (zoomProjectIdx === null) return;
+  var total = PROJECTS[zoomProjectIdx].images.length;
+  zoomSlideIdx = ((zoomSlideIdx - 1) % total + total) % total;
+  updateZoomDisplay();
+}
+
+function zoomGoNext() {
+  if (zoomProjectIdx === null) return;
+  var total = PROJECTS[zoomProjectIdx].images.length;
+  zoomSlideIdx = ((zoomSlideIdx + 1) % total + total) % total;
+  updateZoomDisplay();
+}
+
+zoomOverlay.addEventListener('click', function(e) {
+  if (e.target === zoomOverlay || e.target === zoomClose) closeZoom();
+});
+zoomClose.addEventListener('click', closeZoom);
+zoomZoneLeft.addEventListener('click', function(e) { e.stopPropagation(); zoomGoPrev(); });
+zoomZoneRight.addEventListener('click', function(e) { e.stopPropagation(); zoomGoNext(); });
+
+document.addEventListener('keydown', function(e) {
+  if (zoomOverlay.classList.contains('active')) {
+    if (e.key === 'Escape') { closeZoom(); }
+    else if (e.key === 'ArrowLeft') { zoomGoPrev(); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { zoomGoNext(); e.preventDefault(); }
+  }
+});
+
+var zoomTouchStartX = 0;
+zoomOverlay.addEventListener('touchstart', function(e) { zoomTouchStartX = e.touches[0].clientX; }, { passive: true });
+zoomOverlay.addEventListener('touchend', function(e) {
+  if (zoomTouchStartX === null) return;
+  var diff = zoomTouchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) zoomGoNext(); else zoomGoPrev();
+  }
+  zoomTouchStartX = null;
+}, { passive: true });
+
+// ===== Search Filter =====
+var searchInput = document.getElementById('workSearch');
+var searchClear = document.getElementById('searchClear');
+var noResults = document.getElementById('noResults');
+
+function doSearch() {
+  var query = (searchInput.value || '').toLowerCase().trim();
+  var cards = document.querySelectorAll('.project-card');
+  var visible = 0;
+  cards.forEach(function(card) {
+    var text = (card.getAttribute('data-title') + ' ' + card.getAttribute('data-subtitle') + ' ' + card.getAttribute('data-category') + ' ' + card.getAttribute('data-year') + ' ' + card.getAttribute('data-tags') + ' ' + card.getAttribute('data-desc')).toLowerCase();
+    if (!query || text.indexOf(query) >= 0) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  noResults.style.display = visible === 0 ? 'block' : 'none';
+  searchClear.classList.toggle('visible', !!query);
+}
+
+if (searchInput) {
+  searchInput.addEventListener('input', doSearch);
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { searchInput.value = ''; doSearch(); searchInput.blur(); }
+  });
+}
+if (searchClear) {
+  searchClear.addEventListener('click', function() { searchInput.value = ''; doSearch(); searchInput.focus(); });
+}
+
+// ===== Nav Scroll =====
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function() { nav.classList.toggle('scrolled', window.scrollY > 50); });
+
+// ===== Hamburger =====
+var hamburger = document.getElementById('hamburger');
+var navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', function() { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
+navLinks.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { hamburger.classList.remove('active'); navLinks.classList.remove('active'); }); });
+
+// ===== Back to Top =====
+var backTop = document.getElementById('backTop');
+window.addEventListener('scroll', function() { backTop.classList.toggle('active', window.scrollY > 500); });
+backTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+// ===== Intersection Observer =====
+if ('IntersectionObserver' in window) {
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.project-card').forEach(function(c) {
+    c.style.animationPlayState = 'paused';
+    io.observe(c);
+  });
+}
+</script>
+</body>
+</html>
